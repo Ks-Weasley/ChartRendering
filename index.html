@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>PubSub practice</title>
+    <meta charset="UTF-8" />
+	<!-- All files relating to D3 implementation -->
+	<script src="renderD3JS.js"></script>
+	<script src="./d3-implementation/doughnutChart.js"></script>
+	<script src="./d3-implementation/horizontalBarGraph.js"></script>
+	<script src="./d3-implementation/pieChart.js"></script>
+	<script src="./d3-implementation/stackedHorizontalBar.js"></script>
+	<script src="./d3-implementation/stackedVerticalBarGraph.js"></script>
+	<script src="./d3-implementation/verticalBarGraph.js"></script>
+	<script src="./d3-implementation/lineChart.js"></script>
+
+	<script type="text/javascript" src="./node_modules/d3/dist/d3.min.js"></script>
+    <script type="text/javascript" src="./node_modules/pubsub.js/pubsub.js"></script>
+	<script type="text/javascript" src="Chart.min.js"></script>
+	<script type="text/javascript" src="chartjs-plugin-datalabels.min.js"></script>
+    
+	
+	<script src="renderChartJS.js"></script>
+	
+    
+    <script src="pubSubModel.js"></script>
+    <script src="staticData.js"></script>
+	<script src="validator.js"></script>
+    <script src="formData.js"></script>
+	
+
+  </head>
+  <body>
+    <form onsubmit="validateForm(this)">
+			<table width="90%x" border="1px" frames="1" cellspacing="0" cellpadding="10px">
+			<tr>
+				<td><label>Chart Size (WxH in px)</label></td>
+				<td>
+					<input type="number" id="chartW" min="600" value="600"></input> 
+					<input type="number" id="chartH" min="600" value="600"></input> 
+				</td>
+				<td rowspan=9>
+
+					<div id="container" style="position: relative;">
+						<canvas id="canvas" onreset="test()"></canvas>
+					</div>
+					<div id="d3JS">
+						<svg></svg>
+					</div>
+					
+				</td>
+			</tr>
+			<tr>
+				<td><label>Choose Chart Type</label></td> 
+				<td><select id="charttype">
+				<option value="line">Line Chart</option>
+				<option value="pie">Pie Chart</option>
+				<option value="horizontalBar" selected>Horizontal Bar</option>
+				<option value="stacked hbar">Horizontal Stacked Bar</option>
+				<option value="bar">Vertical Bar</option>
+				<option value="stacked vbar">Vertical Stacked Bar</option>
+				<option value="doughnut">Doughnut Chart</option>
+				<option value="radar">Radar Chart</option>
+				</select></td>
+				</tr>
+				<tr>
+					<td><label>Title Settings</label></td> 
+					<td><input type="checkbox" id="showtitle" checked>Show Title</input>
+					<br/><br/>
+					<label>Title Text</label> 
+					<input type="text" id="titletext" value="My Chart Title"></input> 
+					</td>
+				</tr>
+				<tr>
+					<td><label>Legend Settings</label></td> 
+					<td>
+					<input type="checkbox" id="showlegend" checked></input>
+					<label>Show Legend</label> 
+					<br/><br/>
+					<label>Legend Position</label> 
+					<select id="lposition">
+						<option id="pos">top</option>
+						<option id="pos" selected>bottom</option>
+					</select>
+					</td>
+				</tr>
+				<tr>
+					<td><label>X-Axes Settings</label></td> 
+					<td>
+					<input type="checkbox" id="showxaxis" checked></input>
+					<label>Show X-Axes</label>
+					<br/><br/>
+					<input type="checkbox" id="showxlabel" checked></input>
+					<label>Show X-Axes Label</label> 
+					<br/><br/>
+					<input type="checkbox" id="gridXdisplay" checked></input>
+					<label>Show X-Axes grid</label> 
+					<br/><br/>
+					<input type="checkbox" id="showxaxisTicks" checked></input>
+					<label>Show X-Axes ticks</label>
+					<br/><br/>
+					<input type="checkbox" id="showxaxisTickLabels" checked></input>
+					<label>Show X-Axes tick labels</label>
+					<br/><br/>
+					<input type="color" id="xAxesColor" value="black"></input>
+					<label>X-Axes color</label> 
+					<br/><br/>
+					<input type="color" id="xAxesGridColor" value="black"></input>
+					<label>X-Axes Gridlines color</label> 
+					<br/><br/>
+					<label>X Axis type</label> 
+					<select id="xLineType">
+						<option id="pos" selected>solid</option>
+						<option id="pos">dotted</option>
+						<option id="pos">dashed</option>
+					</select>
+					<br/><br/>
+					<label>Gridlines type</label> 
+					<select id="xGridLineType">
+						<option id="pos" selected>solid</option>
+						<option id="pos">dotted</option>
+						<option id="pos">dashed</option>
+					</select>
+					<br/><br/>
+					<label>Axis Position</label> 
+					<select id="Xposition">
+						<option id="pos">top</option>
+						<option id="pos" selected>bottom</option>
+					</select>
+					<br/><br/>
+					<label>X-Axes Label</label> 
+					<input type="text" id="xlabel" value="Horizontal Label"></input> 
+					<br/><br/>
+					<label>X-Axes Grid Size</label> 
+					<input type="number" id="gridXLineWidth" value="0.5" min="0" max="10" step="0.1"></input> 
+					<br/><br/>
+					<label>X-Axes thickness</label> 
+					<input type="number" id="xAxesThickness" value="1" min="1" max="10"></input> 
+					<br/><br/>
+					</td>
+				</tr>
+				<tr>
+					<td><label>Y-Axes Settings</label></td> 
+					<td>
+					<input type="checkbox" id="showyaxis" checked></input>
+					<label>Show Y-Axes</label>
+					<br/><br/>
+					<input type="checkbox" id="showylabel" checked></input>
+					<label>Show Y-Axes Label</label>
+					<br/><br/>
+					<input type="checkbox" id="gridYdisplay" checked></input>
+					<label>Show Y-Axes grid</label>
+					<br/><br/>
+					<input type="checkbox" id="showyaxisTicks" checked></input>
+					<label>Show Y-Axes ticks</label>
+					<br/><br/>
+					<input type="checkbox" id="showyaxisTickLabels" checked></input>
+					<label>Show Y-Axes tick labels</label>
+					<br/><br/>
+					<input type="color" id="yAxesColor" value="black"></input>
+					<label>Y-Axes color</label> 
+					<br/><br/>
+					<input type="color" id="yAxesGridColor" value="black"></input>
+					<label>Y-Axes Gridlines color</label> 
+					<br/><br/>
+					<label>Y Axis type</label> 
+					<select id="yLineType">
+						<option id="pos" selected>solid</option>
+						<option id="pos">dotted</option>
+						<option id="pos">dashed</option>
+					</select>
+					<br/><br/>
+					<label>Gridlines type</label> 
+					<select id="yGridLineType">
+						<option id="pos" selected>solid</option>
+						<option id="pos">dotted</option>
+						<option id="pos">dashed</option>
+					</select>
+					<br/><br/>
+					<label>Y Axis position</label> 
+					<select id="Yposition">
+						<option id="pos">right</option>
+						<option id="pos" selected>left</option>
+					</select>
+					<br/><br/>
+					<label>Y-Axes Label</label> 
+					<input type="text" id="ylabel" value="Vertical Label"></input> 
+					<br/><br/>
+					<label>Y-Axes Grid Size</label> 
+					<input type="number" id="gridYLineWidth" value="0.5" min="0" max="10" step="0.1"></input> 
+					<br/><br/>
+					<label>Y-Axes thickness</label> 
+					<input type="number" id="yAxesThickness" value="1" min="1" max="10"></input> 
+					<br/><br/>
+				</td>
+				</tr>
+				<tr>
+					<td><label>Value</td> 
+					<td>
+						<input type="checkbox" id="plotDisplay"></input>
+						<label>Display Value</label>
+						<br/><br/>
+						<input type="radio" id="plotByPercentage" name="plot"></input>
+						<label>Render as percentage</label>
+						<br/><br/>
+						<input type="radio" id="plotByValue" name="plot" checked></input>
+						<label>Show values</label>
+						<br/><br/>
+						<input type="checkbox" id="smooth" checked></input>
+						<label>Smooth(for line chart)</label>
+						<br/><br/>
+					</td>	
+				</tr>
+				<tr>
+					<td><label>Chart Data</label></td> 
+					<td>
+					<label>Category Axis Labels</label>
+					<input type="text" size="50" id="labels"></input>
+					<br/><br/>
+					<label>Value Axis Labels</label>
+					<input type="text" size="50" id="datalabels"></input>
+					<br/><br/>
+					<label>Chart Data</label>
+					<input type="text" size="50" id="datasets"></input>
+					<br/><br/>
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><input type="submit" value="submit"></input></td>
+				</tr>
+			</table>
+		   </form>
+		   
+  </body>
+</html>
