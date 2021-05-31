@@ -216,12 +216,8 @@ class HorizontalBarGraph {
       .join("rect")
       .attr("class", "bar")
       .attr("y", function (d) {
-        d3.select(this)
-          .append("text")
-          .attr("class", "barValue")
-          .attr("x", bandScale(d.label) + bandScale.bandwidth() / 2)
-          .attr("y", linearScale(d.value) / 2)
-          .text(d.value);
+        d3.select(this);
+
         return bandScale(d.label);
       })
       .attr("height", bandScale.bandwidth())
@@ -229,6 +225,27 @@ class HorizontalBarGraph {
         return linearScale(d.value);
       })
       .attr("fill", options.chartTheme);
+
+    // Plotting values for the bar
+    if(options.values.display)
+    axis
+      .selectAll(".barValue")
+      .data(myData)
+      .join("text")
+      .attr("class", "barValue")
+      .attr("x", (d) => linearScale(d.value) / 2)
+      .attr("y", (d) => bandScale(d.label) + bandScale.bandwidth() / 2)
+      .attr("fill", "black")
+      .attr("font-size", 10)
+      .attr("font-weight", "bold")
+      .attr("text-anchor", "middle")
+      .text((d) =>
+        options.values.absolute
+          ? d.value
+          : parseFloat(
+              (d.value / d3.sum(myData, (d) => d.value)) * 100
+            ).toFixed(2)
+      );
   }
 
   axisLeftTop(axis, options, myData) {
@@ -327,6 +344,27 @@ class HorizontalBarGraph {
         return linearScale(d.value);
       })
       .attr("fill", options.chartTheme);
+
+    // Plotting values for the bar
+    if (options.values.display)
+      axis
+        .selectAll(".barValue")
+        .data(myData)
+        .join("text")
+        .attr("class", "barValue")
+        .attr("x", (d) => linearScale(d.value) / 2)
+        .attr("y", (d) => bandScale(d.label) + bandScale.bandwidth() / 2)
+        .attr("fill", "black")
+        .attr("font-size", 10)
+        .attr("font-weight", "bold")
+        .attr("text-anchor", "middle")
+        .text((d) =>
+          options.values.absolute
+            ? d.value
+            : parseFloat(
+                (d.value / d3.sum(myData, (d) => d.value)) * 100
+              ).toFixed(2)
+        );
   }
 
   axisRightBottom(axis, options, myData) {
@@ -444,6 +482,32 @@ class HorizontalBarGraph {
         return options.chartWidth - linearScale(d.value);
       })
       .attr("fill", options.chartTheme);
+
+    // Plotting values for the bar
+    if (options.values.display)
+      axis
+        .selectAll(".barValue")
+        .data(myData)
+        .join("text")
+        .attr("class", "barValue")
+        .attr(
+          "x",
+          (d) =>
+            linearScale(d.value) +
+            (options.chartWidth - linearScale(d.value)) / 2
+        )
+        .attr("y", (d) => bandScale(d.label) + bandScale.bandwidth() / 2)
+        .attr("fill", "black")
+        .attr("font-size", 10)
+        .attr("font-weight", "bold")
+        .attr("text-anchor", "middle")
+        .text((d) =>
+          options.values.absolute
+            ? d.value
+            : parseFloat(
+                (d.value / d3.sum(myData, (d) => d.value)) * 100
+              ).toFixed(2)
+        );
   }
 
   axisRightTop(axis, options, myData) {
@@ -544,6 +608,32 @@ class HorizontalBarGraph {
         return options.chartWidth - linearScale(d.value);
       })
       .attr("fill", options.chartTheme);
+
+    // Plotting values for the bar
+    if (options.values.display)
+      axis
+        .selectAll(".barValue")
+        .data(myData)
+        .join("text")
+        .attr("class", "barValue")
+        .attr(
+          "x",
+          (d) =>
+            linearScale(d.value) +
+            (options.chartWidth - linearScale(d.value)) / 2
+        )
+        .attr("y", (d) => bandScale(d.label) + bandScale.bandwidth() / 2)
+        .attr("fill", "black")
+        .attr("font-size", 10)
+        .attr("font-weight", "bold")
+        .attr("text-anchor", "middle")
+        .text((d) =>
+          options.values.absolute
+            ? d.value
+            : parseFloat(
+                (d.value / d3.sum(myData, (d) => d.value)) * 100
+              ).toFixed(2)
+        );
   }
 
   adjuster(options, axis, svg) {

@@ -224,18 +224,19 @@ class StackedHorizontalBarGraph {
 
     this.drawXGridLinesOnTop(axis, options, myData, xScale);
     this.drawYGridLines_BaseOnTop(g, options, myData, yScale);
-
+    var keys = this.keys;
     // Plotting the data
     axis = axis.append("g").classed("bar", true);
     var g = axis
       .selectAll(".bar")
       .data(this.stackedDataset)
       .join("g")
-      .classed("series", true)
+      .attr("class", (d, i) => keys[i])
       .style("fill", function (d, i) {
         return colors[i];
       });
 
+    // Plotting the rectangles
     g.selectAll("rect")
       .data((d) => d)
       .join("rect")
@@ -243,6 +244,54 @@ class StackedHorizontalBarGraph {
       .attr("height", yScale.bandwidth())
       .attr("y", (d, i) => yScale(d.data.label))
       .attr("x", (d) => xScale(d[0]));
+
+    if (options.values.display)
+      for (let i = 0; i < keys.length; i++)
+        g.selectAll(keys[i])
+          .data(this.stackedDataset[i])
+          .join("text")
+          .attr("class", "barValue")
+          .attr("x", (d) => xScale(d[0]) + (xScale(d[1]) - xScale(d[0])) / 2)
+          .attr("y", (d) => yScale(d.data.label) + yScale.bandwidth() / 2)
+          .attr("fill", "black")
+          .attr("font-size", 10)
+          .attr("font-weight", "bold")
+          .attr("text-anchor", "middle")
+          .text((d) => {
+            if (options.values.absolute)
+              return keys[i] === "men_count"
+                ? d.data.men_count
+                : keys[i] === "women_count"
+                ? d.data.women_count
+                : d.data.children_count;
+            else
+              return keys[i] === "men_count"
+                ? parseFloat(
+                    (d.data.men_count /
+                      d3.sum(
+                        this.stackedDataset[i],
+                        (d, i) => d.data.men_count
+                      )) *
+                      100
+                  ).toFixed(2)
+                : keys[i] === "women_count"
+                ? parseFloat(
+                    (d.data.women_count /
+                      d3.sum(
+                        this.stackedDataset[i],
+                        (d, i) => d.data.women_count
+                      )) *
+                      100
+                  ).toFixed(2)
+                : parseFloat(
+                    (d.data.children_count /
+                      d3.sum(
+                        this.stackedDataset[i],
+                        (d, i) => d.data.children_count
+                      )) *
+                      100
+                  ).toFixed(2);
+          });
   }
 
   axisLeftTop(axis, options, myData, colors = this.colors) {
@@ -327,18 +376,18 @@ class StackedHorizontalBarGraph {
 
     this.drawXGridLinesOnBottom(axis, options, myData, xScale);
     this.drawYGridLines_BaseOnBottom(g, options, myData, yScale);
-
+    const keys = this.keys;
     // Plotting the data
     axis = axis.append("g").classed("bar", true);
     var g = axis
       .selectAll(".bar")
       .data(this.stackedDataset)
       .join("g")
-      .classed("series", true)
+      .attr("class", (d, i) => keys[i])
       .style("fill", function (d, i) {
         return colors[i];
       });
-
+    // Plotting the rectangles
     g.selectAll("rect")
       .data((d) => d)
       .join("rect")
@@ -346,6 +395,54 @@ class StackedHorizontalBarGraph {
       .attr("height", yScale.bandwidth())
       .attr("y", (d, i) => yScale(d.data.label))
       .attr("x", (d) => xScale(d[0]));
+    // Plotting the bar values
+    if (options.values.display)
+      for (let i = 0; i < keys.length; i++)
+        g.selectAll(keys[i])
+          .data(this.stackedDataset[i])
+          .join("text")
+          .attr("class", "barValue")
+          .attr("x", (d) => xScale(d[0]) + (xScale(d[1]) - xScale(d[0])) / 2)
+          .attr("y", (d) => yScale(d.data.label) + yScale.bandwidth() / 2)
+          .attr("fill", "black")
+          .attr("font-size", 10)
+          .attr("font-weight", "bold")
+          .attr("text-anchor", "middle")
+          .text((d) => {
+            if (options.values.absolute)
+              return keys[i] === "men_count"
+                ? d.data.men_count
+                : keys[i] === "women_count"
+                ? d.data.women_count
+                : d.data.children_count;
+            else
+              return keys[i] === "men_count"
+                ? parseFloat(
+                    (d.data.men_count /
+                      d3.sum(
+                        this.stackedDataset[i],
+                        (d, i) => d.data.men_count
+                      )) *
+                      100
+                  ).toFixed(2)
+                : keys[i] === "women_count"
+                ? parseFloat(
+                    (d.data.women_count /
+                      d3.sum(
+                        this.stackedDataset[i],
+                        (d, i) => d.data.women_count
+                      )) *
+                      100
+                  ).toFixed(2)
+                : parseFloat(
+                    (d.data.children_count /
+                      d3.sum(
+                        this.stackedDataset[i],
+                        (d, i) => d.data.children_count
+                      )) *
+                      100
+                  ).toFixed(2);
+          });
   }
 
   axisRightBottom(axis, options, myData, colors = this.colors) {
@@ -430,14 +527,14 @@ class StackedHorizontalBarGraph {
     var g = axis.append("g");
     this.drawXGridLinesOnTop(axis, options, myData, xScale);
     this.drawYGridLines_BaseOnTop(axis, options, myData, yScale);
-
+    const keys = this.keys;
     // Plotting the myData
     axis = axis.append("g").classed("bar", true);
     var g = axis
       .selectAll(".bar")
       .data(this.stackedDataset)
       .join("g")
-      .classed("series", true)
+      .attr("class", (d, i) => keys[i])
       .style("fill", function (d, i) {
         return colors[i];
       });
@@ -449,6 +546,54 @@ class StackedHorizontalBarGraph {
       .attr("height", yScale.bandwidth())
       .attr("y", (d, i) => yScale(d.data.label))
       .attr("x", (d) => xScale(d[1]));
+
+    if (options.values.display)
+      for (let i = 0; i < keys.length; i++)
+        g.selectAll(keys[i])
+          .data(this.stackedDataset[i])
+          .join("text")
+          .attr("class", "barValue")
+          .attr("x", (d) => xScale(d[1]) + (xScale(d[0]) - xScale(d[1])) / 2)
+          .attr("y", (d) => yScale(d.data.label) + yScale.bandwidth() / 2)
+          .attr("fill", "black")
+          .attr("font-size", 10)
+          .attr("font-weight", "bold")
+          .attr("text-anchor", "middle")
+          .text((d) => {
+            if (options.values.absolute)
+              return keys[i] === "men_count"
+                ? d.data.men_count
+                : keys[i] === "women_count"
+                ? d.data.women_count
+                : d.data.children_count;
+            else
+              return keys[i] === "men_count"
+                ? parseFloat(
+                    (d.data.men_count /
+                      d3.sum(
+                        this.stackedDataset[i],
+                        (d, i) => d.data.men_count
+                      )) *
+                      100
+                  ).toFixed(2)
+                : keys[i] === "women_count"
+                ? parseFloat(
+                    (d.data.women_count /
+                      d3.sum(
+                        this.stackedDataset[i],
+                        (d, i) => d.data.women_count
+                      )) *
+                      100
+                  ).toFixed(2)
+                : parseFloat(
+                    (d.data.children_count /
+                      d3.sum(
+                        this.stackedDataset[i],
+                        (d, i) => d.data.children_count
+                      )) *
+                      100
+                  ).toFixed(2);
+          });
   }
 
   axisRightTop(axis, options, myData, colors = this.colors) {
@@ -536,12 +681,13 @@ class StackedHorizontalBarGraph {
     this.drawYGridLines_BaseOnBottom(g, options, myData, yScale);
 
     // Plotting the data
+    const keys = this.keys;
     axis = axis.append("g").classed("bar", true);
     var g = axis
       .selectAll(".bar")
       .data(this.stackedDataset)
       .join("g")
-      .classed("series", true)
+      .attr("class", (d, i) => keys[i])
       .style("fill", function (d, i) {
         return colors[i];
       });
@@ -553,6 +699,54 @@ class StackedHorizontalBarGraph {
       .attr("height", yScale.bandwidth())
       .attr("y", (d, i) => yScale(d.data.label))
       .attr("x", (d) => xScale(d[1]));
+
+    if (options.values.display)
+      for (let i = 0; i < keys.length; i++)
+        g.selectAll(keys[i])
+          .data(this.stackedDataset[i])
+          .join("text")
+          .attr("class", "barValue")
+          .attr("x", (d) => xScale(d[1]) + (xScale(d[0]) - xScale(d[1])) / 2)
+          .attr("y", (d) => yScale(d.data.label) + yScale.bandwidth() / 2)
+          .attr("fill", "black")
+          .attr("font-size", 10)
+          .attr("font-weight", "bold")
+          .attr("text-anchor", "middle")
+          .text((d) => {
+            if (options.values.absolute)
+              return keys[i] === "men_count"
+                ? d.data.men_count
+                : keys[i] === "women_count"
+                ? d.data.women_count
+                : d.data.children_count;
+            else
+              return keys[i] === "men_count"
+                ? parseFloat(
+                    (d.data.men_count /
+                      d3.sum(
+                        this.stackedDataset[i],
+                        (d, i) => d.data.men_count
+                      )) *
+                      100
+                  ).toFixed(2)
+                : keys[i] === "women_count"
+                ? parseFloat(
+                    (d.data.women_count /
+                      d3.sum(
+                        this.stackedDataset[i],
+                        (d, i) => d.data.women_count
+                      )) *
+                      100
+                  ).toFixed(2)
+                : parseFloat(
+                    (d.data.children_count /
+                      d3.sum(
+                        this.stackedDataset[i],
+                        (d, i) => d.data.children_count
+                      )) *
+                      100
+                  ).toFixed(2);
+          });
   }
 
   adjuster(options, axis, svg) {
