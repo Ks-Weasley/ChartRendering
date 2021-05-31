@@ -226,12 +226,13 @@ class StackedVerticalBarGraph {
     this.drawYGridLines_BaseOnRight(axis, options, myData, yScale);
 
     // Plotting the data
+    const keys = this.keys;
     axis = axis.append("g").classed("bar", true);
     g = axis
       .selectAll(".bar")
       .data(this.stackedDataset)
       .join("g")
-      .classed("series", true)
+      .attr("class", (d, i) => keys[i])
       .style("fill", function (d, i) {
         return colors[i];
       });
@@ -243,14 +244,58 @@ class StackedVerticalBarGraph {
       .attr("height", (d) => yScale(d[0]) - yScale(d[1]))
       .attr("y", (d) => yScale(d[1]))
       .attr("x", (d) => xScale(d.data.label));
+
+    // Plotting values for each bar
+    if (options.values.display)
+      for (let i = 0; i < keys.length; i++)
+        g.selectAll(keys[i])
+          .data(this.stackedDataset[i])
+          .join("text")
+          .attr("class", "barValue")
+          .attr("x", (d) => xScale(d.data.label) + xScale.bandwidth() / 2)
+          .attr("y", (d) => yScale(d[1]) + (yScale(d[0]) - yScale(d[1])) / 2)
+          .attr("fill", "black")
+          .attr("font-size", 10)
+          .attr("font-weight", "bold")
+          .attr("text-anchor", "middle")
+          .text((d) =>{
+            if (options.values.absolute)
+              return keys[i] === "men_count"
+                ? d.data.men_count
+                : keys[i] === "women_count"
+                ? d.data.women_count
+                : d.data.children_count;
+            else
+              return keys[i] === "men_count"
+                ? parseFloat(
+                    (d.data.men_count /
+                      d3.sum(
+                        this.stackedDataset[i],
+                        (d, i) => d.data.men_count
+                      )) *
+                      100
+                  ).toFixed(2)
+                : keys[i] === "women_count"
+                ? parseFloat(
+                    (d.data.women_count /
+                      d3.sum(
+                        this.stackedDataset[i],
+                        (d, i) => d.data.women_count
+                      )) *
+                      100
+                  ).toFixed(2)
+                : parseFloat(
+                    (d.data.children_count /
+                      d3.sum(
+                        this.stackedDataset[i],
+                        (d, i) => d.data.children_count
+                      )) *
+                      100
+                  ).toFixed(2);
+          }
+          );
   }
-  axisLeftTop(
-    axis,
-    marginWidth,
-    options,
-    myData,
-    colors = this.colors
-  ) {
+  axisLeftTop(axis, marginWidth, options, myData, colors = this.colors) {
     // Defining X Axis
     var xScale = d3
       .scaleBand()
@@ -327,21 +372,20 @@ class StackedVerticalBarGraph {
           ? options.scales.yAxes.scaleLabel.text
           : ""
       );
-    
-    var g = axis
-      .append("g");
-    
+
+    var g = axis.append("g");
+
     this.drawXGridLinesOnRight(g, options, myData, xScale);
     this.drawYGridLines_BaseOnRight(axis, options, myData, yScale);
-    
 
     // Plotting the myData
+    const keys = this.keys;
     axis = axis.append("g").classed("bar", true);
     var g = axis
       .selectAll(".bar")
       .data(this.stackedDataset)
       .join("g")
-      .classed("series", true)
+      .attr("class", (d, i) => keys[i])
       .style("fill", function (d, i) {
         return colors[i];
       });
@@ -353,14 +397,60 @@ class StackedVerticalBarGraph {
       .attr("height", (d) => yScale(d[1]) - yScale(d[0]))
       .attr("y", (d) => yScale(d[0]))
       .attr("x", (d) => xScale(d.data.label));
+
+    // Plotting values for each bar
+    if (options.values.display)
+      for (let i = 0; i < keys.length; i++)
+        g.selectAll(keys[i])
+          .data(this.stackedDataset[i])
+          .join("text")
+          .attr("class", "barValue")
+          .attr("x", (d) => xScale(d.data.label) + xScale.bandwidth() / 2)
+          .attr("y", (d) => yScale(d[0]) + (yScale(d[1]) - yScale(d[0])) / 2)
+          .attr("fill", "black")
+          .attr("font-size", 10)
+          .attr("font-weight", "bold")
+          .attr("text-anchor", "middle")
+          .text((d) =>
+          {
+            if (options.values.absolute)
+              return keys[i] === "men_count"
+                ? d.data.men_count
+                : keys[i] === "women_count"
+                ? d.data.women_count
+                : d.data.children_count;
+            else
+              return keys[i] === "men_count"
+                ? parseFloat(
+                    (d.data.men_count /
+                      d3.sum(
+                        this.stackedDataset[i],
+                        (d, i) => d.data.men_count
+                      )) *
+                      100
+                  ).toFixed(2)
+                : keys[i] === "women_count"
+                ? parseFloat(
+                    (d.data.women_count /
+                      d3.sum(
+                        this.stackedDataset[i],
+                        (d, i) => d.data.women_count
+                      )) *
+                      100
+                  ).toFixed(2)
+                : parseFloat(
+                    (d.data.children_count /
+                      d3.sum(
+                        this.stackedDataset[i],
+                        (d, i) => d.data.children_count
+                      )) *
+                      100
+                  ).toFixed(2);
+          }
+          );
   }
 
-  axisRightBottom(
-    axis,
-    options,
-    myData,
-    colors = this.colors
-  ) {
+  axisRightBottom(axis, options, myData, colors = this.colors) {
     // Defining X Axis
     var xScale = d3
       .scaleBand()
@@ -438,19 +528,19 @@ class StackedVerticalBarGraph {
           : ""
       );
 
-    var g = axis
-      .append("g");
+    var g = axis.append("g");
 
     this.drawXGridLinesOnLeft(g, options, myData, xScale);
     this.drawYGridLines_BaseOnLeft(axis, options, myData, yScale);
 
-    // Plotting the myData
+    // Plotting myData
+    const keys = this.keys;
     axis = axis.append("g").classed("bar", true);
     var g = axis
       .selectAll(".bar")
       .data(this.stackedDataset)
       .join("g")
-      .classed("series", true)
+      .attr("class", (d, i) => keys[i])
       .style("fill", function (d, i) {
         return colors[i];
       });
@@ -462,15 +552,59 @@ class StackedVerticalBarGraph {
       .attr("height", (d) => yScale(d[0]) - yScale(d[1]))
       .attr("y", (d) => yScale(d[1]))
       .attr("x", (d) => xScale(d.data.label));
+
+    // Plotting values for each bar
+
+    if (options.values.display)
+      for (let i = 0; i < keys.length; i++)
+        g.selectAll(keys[i])
+          .data(this.stackedDataset[i])
+          .join("text")
+          .attr("class", "barValue")
+          .attr("x", (d) => xScale(d.data.label) + xScale.bandwidth() / 2)
+          .attr("y", (d) => yScale(d[1]) + (yScale(d[0]) - yScale(d[1])) / 2)
+          .attr("fill", "black")
+          .attr("font-size", 10)
+          .attr("font-weight", "bold")
+          .attr("text-anchor", "middle")
+          .text((d) => {
+            if (options.values.absolute)
+              return keys[i] === "men_count"
+                ? d.data.men_count
+                : keys[i] === "women_count"
+                ? d.data.women_count
+                : d.data.children_count;
+            else
+              return keys[i] === "men_count"
+                ? parseFloat(
+                    (d.data.men_count /
+                      d3.sum(
+                        this.stackedDataset[i],
+                        (d, i) => d.data.men_count
+                      )) *
+                      100
+                  ).toFixed(2)
+                : keys[i] === "women_count"
+                ? parseFloat(
+                    (d.data.women_count /
+                      d3.sum(
+                        this.stackedDataset[i],
+                        (d, i) => d.data.women_count
+                      )) *
+                      100
+                  ).toFixed(2)
+                : parseFloat(
+                    (d.data.children_count /
+                      d3.sum(
+                        this.stackedDataset[i],
+                        (d, i) => d.data.children_count
+                      )) *
+                      100
+                  ).toFixed(2);
+          });
   }
 
-  axisRightTop(
-    axis,
-    marginWidth,
-    options,
-    myData,
-    colors = this.colors
-  ) {
+  axisRightTop(axis, marginWidth, options, myData, colors = this.colors) {
     // Defining X Axis
     var xScale = d3
       .scaleBand()
@@ -547,20 +681,19 @@ class StackedVerticalBarGraph {
           : ""
       );
 
-    var g = axis
-      .append("g");
+    var g = axis.append("g");
 
     this.drawXGridLinesOnLeft(g, options, myData, xScale);
     this.drawYGridLines_BaseOnLeft(axis, options, myData, yScale);
 
-    
     // Plotting the data
+    const keys = this.keys;
     axis = axis.append("g").classed("bar", true);
     var g = axis
       .selectAll(".bar")
       .data(this.stackedDataset)
       .join("g")
-      .classed("series", true)
+      .attr("class", (d, i) => keys[i])
       .style("fill", function (d, i) {
         return colors[i];
       });
@@ -572,6 +705,55 @@ class StackedVerticalBarGraph {
       .attr("height", (d) => yScale(d[1]) - yScale(d[0]))
       .attr("y", (d) => yScale(d[0]))
       .attr("x", (d) => xScale(d.data.label));
+
+    // Plotting values for each bar
+    if (options.values.display)
+      for (let i = 0; i < keys.length; i++)
+        g.selectAll(keys[i])
+          .data(this.stackedDataset[i])
+          .join("text")
+          .attr("class", "barValue")
+          .attr("x", (d) => xScale(d.data.label) + xScale.bandwidth() / 2)
+          .attr("y", (d) => yScale(d[0]) + (yScale(d[1]) - yScale(d[0])) / 2)
+          .attr("fill", "black")
+          .attr("font-size", 10)
+          .attr("font-weight", "bold")
+          .attr("text-anchor", "middle")
+          .text((d) => {
+            if (options.values.absolute)
+              return keys[i] === "men_count"
+                ? d.data.men_count
+                : keys[i] === "women_count"
+                ? d.data.women_count
+                : d.data.children_count;
+            else
+              return keys[i] === "men_count"
+                ? parseFloat(
+                    (d.data.men_count /
+                      d3.sum(
+                        this.stackedDataset[i],
+                        (d, i) => d.data.men_count
+                      )) *
+                      100
+                  ).toFixed(2)
+                : keys[i] === "women_count"
+                ? parseFloat(
+                    (d.data.women_count /
+                      d3.sum(
+                        this.stackedDataset[i],
+                        (d, i) => d.data.women_count
+                      )) *
+                      100
+                  ).toFixed(2)
+                : parseFloat(
+                    (d.data.children_count /
+                      d3.sum(
+                        this.stackedDataset[i],
+                        (d, i) => d.data.children_count
+                      )) *
+                      100
+                  ).toFixed(2);
+          });
   }
 
   adjuster(options, axis, svg) {
@@ -625,7 +807,7 @@ class StackedVerticalBarGraph {
     axis
       .selectAll(".yAxis>.tick")
       .attr("stroke", this.options.scales.yAxes.color);
-      
+
     // Setting Grid X Width
     svg
       .selectAll(".gridX")
@@ -644,7 +826,7 @@ class StackedVerticalBarGraph {
         this.options.scales.xAxes.gridLines.type["stroke-linecap"]
       )
       .attr("stroke", this.options.scales.xAxes.gridLines.color);
-    
+
     //  Setting Grid Y Axis
     svg
       .selectAll(".gridY")
@@ -663,9 +845,9 @@ class StackedVerticalBarGraph {
         this.options.scales.yAxes.gridLines.type["stroke-linecap"]
       )
       .attr("stroke", this.options.scales.yAxes.gridLines.color);
-      svg
-        .selectAll(".gridY line")
-        .attr("stroke", this.options.scales.yAxes.gridLines.color);
+    svg
+      .selectAll(".gridY line")
+      .attr("stroke", this.options.scales.yAxes.gridLines.color);
   }
 
   main() {
@@ -802,7 +984,7 @@ class StackedVerticalBarGraph {
       this.options.scales.xAxes.align === "top" &&
       this.options.scales.yAxes.align === "left"
     )
-      this.axisLeftTop(axis,marginWidth, this.options, this.data);
+      this.axisLeftTop(axis, marginWidth, this.options, this.data);
     else this.axisRightTop(axis, marginWidth, this.options, this.data);
 
     this.adjuster(this.options, axis, svg);

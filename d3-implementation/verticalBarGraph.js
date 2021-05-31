@@ -225,6 +225,30 @@ class VerticalBarGraph {
         return options.chartHeight - yScale(d.value);
       })
       .attr("fill", options.chartTheme);
+
+    // Plotting values for the bar
+    if (options.values.display)
+      axis
+        .selectAll(".barValue")
+        .data(myData.dataset)
+        .join("text")
+        .attr("class", "barValue")
+        .attr("x", (d) => xScale(d.label) + xScale.bandwidth() / 2)
+        .attr(
+          "y",
+          (d) => yScale(d.value) + (options.chartHeight - yScale(d.value)) / 2
+        )
+        .attr("fill", "black")
+        .attr("font-size", 10)
+        .attr("font-weight", "bold")
+        .attr("text-anchor", "middle")
+        .text((d) =>
+          options.values.absolute
+            ? d.value
+            : parseFloat(
+                (d.value / d3.sum(myData.dataset, (d) => d.value)) * 100
+              ).toFixed(2)
+        );
   }
   axisLeftTop(axis, marginWidth, options, myData) {
     var xScale = d3
@@ -317,6 +341,26 @@ class VerticalBarGraph {
         return yScale(d.value);
       })
       .attr("fill", options.chartTheme);
+    // Plotting values for the bar
+    if (options.values.display)
+      axis
+        .selectAll(".barValue")
+        .data(myData.dataset)
+        .join("text")
+        .attr("class", "barValue")
+        .attr("x", (d) => xScale(d.label) + xScale.bandwidth() / 2)
+        .attr("y", (d) => yScale(d.value) - yScale(d.value) / 2)
+        .attr("fill", "black")
+        .attr("font-size", 10)
+        .attr("font-weight", "bold")
+        .attr("text-anchor", "middle")
+        .text((d) =>
+          options.values.absolute
+            ? d.value
+            : parseFloat(
+                (d.value / d3.sum(myData.dataset, (d) => d.value)) * 100
+              ).toFixed(2)
+        );
   }
   axisRightBottom(axis, marginWidth, options, myData) {
     var xScale = d3
@@ -411,6 +455,29 @@ class VerticalBarGraph {
         return options.chartHeight - yScale(d.value);
       })
       .attr("fill", options.chartTheme);
+    // Plotting values for the bar
+    if (options.values.display)
+      axis
+        .selectAll(".barValue")
+        .data(myData.dataset)
+        .join("text")
+        .attr("class", "barValue")
+        .attr("x", (d) => xScale(d.label) + xScale.bandwidth() / 2)
+        .attr(
+          "y",
+          (d) => yScale(d.value) + (options.chartHeight - yScale(d.value)) / 2
+        )
+        .attr("fill", "black")
+        .attr("font-size", 10)
+        .attr("font-weight", "bold")
+        .attr("text-anchor", "middle")
+        .text((d) =>
+          options.values.absolute
+            ? d.value
+            : parseFloat(
+                (d.value / d3.sum(myData.dataset, (d) => d.value)) * 100
+              ).toFixed(2)
+        );
   }
   axisRightTop(axis, marginWidth, options, myData) {
     var xScale = d3
@@ -502,6 +569,26 @@ class VerticalBarGraph {
         return yScale(d.value);
       })
       .attr("fill", options.chartTheme);
+    // Plotting values for the bar
+    if (options.value.display)
+      axis
+        .selectAll(".barValue")
+        .data(myData.dataset)
+        .join("text")
+        .attr("class", "barValue")
+        .attr("x", (d) => xScale(d.label) + xScale.bandwidth() / 2)
+        .attr("y", (d) => yScale(d.value) - yScale(d.value) / 2)
+        .attr("fill", "black")
+        .attr("font-size", 10)
+        .attr("font-weight", "bold")
+        .attr("text-anchor", "middle")
+        .text((d) =>
+          options.values.absolute
+            ? d.value
+            : parseFloat(
+                (d.value / d3.sum(myData.dataset, (d) => d.value)) * 100
+              ).toFixed(2)
+        );
   }
 
   adjuster(options, axis, svg) {
@@ -555,7 +642,7 @@ class VerticalBarGraph {
     axis
       .selectAll(".yAxis>.tick")
       .attr("stroke", this.options.scales.yAxes.color);
-      
+
     // Setting Grid X Width
     svg
       .selectAll(".gridX")
@@ -593,9 +680,9 @@ class VerticalBarGraph {
         this.options.scales.yAxes.gridLines.type["stroke-linecap"]
       )
       .attr("stroke", this.options.scales.yAxes.gridLines.color);
-      svg
-        .selectAll(".gridY line")
-        .attr("stroke", this.options.scales.yAxes.gridLines.color);
+    svg
+      .selectAll(".gridY line")
+      .attr("stroke", this.options.scales.yAxes.gridLines.color);
   }
 
   main() {

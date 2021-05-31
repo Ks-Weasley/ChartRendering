@@ -113,7 +113,7 @@ class LineChart {
           .tickFormat((d) => "")
       );
   }
-  axisLeftTop(axis, marginHeight, marginWidth, options, myData) {
+  axisLeftTop(axis, options, myData) {
     // Define X Axis
     let xScale = d3
       .scaleBand()
@@ -219,7 +219,7 @@ class LineChart {
       })
       .attr("stroke-width", 2);
   }
-  axisLeftBottom(axis, marginHeight, marginWidth, options, myData) {
+  axisLeftBottom(axis, options, myData) {
     // Define X Axis
     let xScale = d3
       .scaleBand()
@@ -323,10 +323,11 @@ class LineChart {
       .attr("stroke", function (d) {
         return d.borderColor;
       })
-      .attr("stroke-width", 2);
+      .attr("stroke-width", 2)
+      ;
   }
 
-  axisRightTop(axis, marginHeight, marginWidth, options, myData) {
+  axisRightTop(axis, options, myData) {
     // Define X Axis
     let xScale = d3
       .scaleBand()
@@ -436,7 +437,7 @@ class LineChart {
       .attr("stroke-width", 2);
   }
 
-  axisRightBottom(axis, marginHeight, marginWidth, options, myData) {
+  axisRightBottom(axis, options, myData) {
     // Define X Axis
     let xScale = d3
       .scaleBand()
@@ -748,116 +749,24 @@ class LineChart {
           return d.label;
         });
     }
-    // If Y Axis exists
-    if (this.options.scales.yAxes.display) {
-      // Defining combination of axis
-      if (this.options.scales.xAxes.display) {
-        if (
-          this.options.scales.yAxes.align === "left" &&
-          this.options.scales.xAxes.align === "bottom"
-        )
-          this.axisLeftBottom(
-            axis,
-            marginHeight,
-            marginWidth,
-            this.options,
-            this.data
-          );
-        if (
-          this.options.scales.yAxes.align === "left" &&
-          this.options.scales.xAxes.align === "top"
-        )
-          this.axisLeftTop(
-            axis,
-            marginHeight,
-            marginWidth,
-            this.options,
-            this.data
-          );
-        if (
-          this.options.scales.yAxes.align === "right" &&
-          this.options.scales.xAxes.align === "bottom"
-        )
-          this.axisRightBottom(
-            axis,
-            marginHeight,
-            marginWidth,
-            this.options,
-            this.data
-          );
-        if (
-          this.options.scales.yAxes.align === "right" &&
-          this.options.scales.xAxes.align === "top"
-        )
-          this.axisRightTop(
-            axis,
-            marginHeight,
-            marginWidth,
-            this.options,
-            this.data
-          );
-      } else {
-        if (this.options.scales.yAxes.align === "left")
-          this.axisLeftBottom(
-            axis,
-            marginHeight,
-            marginWidth,
-            this.options,
-            this.data
-          );
-        else
-          this.axisRightBottom(
-            axis,
-            marginHeight,
-            marginWidth,
-            this.options,
-            this.data
-          );
-      }
-    } else {
-      this.options.scales.yAxes.line = false;
-      this.options.scales.yAxes.ticks = false;
-      this.options.scales.yAxes.labels = false;
-    }
-    // If X Axis exists
-    if (
-      this.options.scales.xAxes.display &&
-      !this.options.scales.yAxes.display
-    ) {
-      if (this.options.scales.xAxes.align === "bottom")
-        this.axisLeftBottom(
-          axis,
-          marginHeight,
-          marginHeight,
-          this.options,
-          this.data
-        );
-      else
-        this.axisLeftTop(
-          axis,
-          marginHeight,
-          marginWidth,
-          this.options,
-          this.data
-        );
-    } else {
-      this.options.scales.xAxes.line = false;
-      this.options.scales.xAxes.ticks = false;
-      this.options.scales.xAxes.labels = false;
-    }
 
-    // If both the axis does not exist
+    // Finding axis alignment
     if (
-      !this.options.scales.xAxes.display &&
-      !this.options.scales.yAxes.display
+      this.options.scales.xAxes.align === "bottom" &&
+      this.options.scales.yAxes.align === "left"
     )
-      this.axisLeftBottom(
-        axis,
-        marginHeight,
-        marginWidth,
-        this.options,
-        this.data
-      );
+      this.axisLeftBottom(axis, this.options, this.data);
+    else if (
+      this.options.scales.xAxes.align === "bottom" &&
+      this.options.scales.yAxes.align === "right"
+    )
+      this.axisRightBottom(axis, this.options, this.data);
+    else if (
+      this.options.scales.xAxes.align === "top" &&
+      this.options.scales.yAxes.align === "left"
+    )
+      this.axisLeftTop(axis, this.options, this.data);
+    else this.axisRightTop(axis, this.options, this.data);
 
     // Adjuster
     this.adjuster(this.options, axis, svg);
