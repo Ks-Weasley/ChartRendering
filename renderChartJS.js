@@ -23,6 +23,7 @@ var opts = {
   scales: {
     xAxes: [
       {
+        position: "bottom",
         display: true,
         stacked: true,
         barPercentage: 1,
@@ -31,12 +32,19 @@ var opts = {
           labelString: "Month",
         },
         gridLines: {
+          drawBorder: false,
+          zeroLineWidth: 1,
+          zeroLineColor: "black",
+          zeroLineBorderDash: [1],
+          drawTicks: true,
+          borderDash: [1],
+          color: "black",
           circular: true,
           display: true,
           lineWidth: 2.0,
         },
         ticks: {
-          enabled: true,
+          display: true,
           fontColor: "#666",
           fontFamily: "Arial',serif",
           fontSize: 20,
@@ -45,6 +53,7 @@ var opts = {
     ],
     yAxes: [
       {
+        position: "left",
         display: true,
         stacked: true,
         barPercentage: 1,
@@ -54,11 +63,19 @@ var opts = {
           labelString: "Value",
         },
         gridLines: {
+          drawBorder: false,
+          zeroLineBorderDash: [1],
+          zeroLineColor: "red",
+          borderDash: [1],
+          drawTicks: true,
+          color: "black",
           circular: true,
           display: true,
           lineWidth: 2.0,
         },
         ticks: {
+          reverse: true,
+          display: true,
           fontFamily: "Arial',serif",
           fontSize: 20,
         },
@@ -69,13 +86,12 @@ var opts = {
     datalabels: {
       color: "black",
       labels: {
-        title: {
+        title: 
+        { 
+          display: false,
           font: {
             weight: "bold",
           },
-        },
-        value: {
-          color: "green",
         },
       },
     },
@@ -90,10 +106,94 @@ function fillOptions(data) {
   opts.legend.position = data.legend.position;
 
   opts.scales.xAxes[0].gridLines.display = data.scales.xAxes.gridLines.display;
-  opts.scales.xAxes[0].gridLines.lineWidth = data.scales.xAxes.gridLines.lineWidth;
+  opts.scales.xAxes[0].gridLines.lineWidth =
+    data.scales.xAxes.gridLines.lineWidth;
 
   opts.scales.yAxes[0].gridLines.display = data.scales.yAxes.gridLines.display;
-  opts.scales.yAxes[0].gridLines.lineWidth = data.scales.yAxes.gridLines.lineWidth;
+  opts.scales.yAxes[0].gridLines.lineWidth =
+    data.scales.yAxes.gridLines.lineWidth;
+
+  opts.scales.xAxes[0].ticks.display = data.scales.xAxes.labels;
+  opts.scales.yAxes[0].ticks.display = data.scales.yAxes.labels;
+
+  opts.scales.xAxes[0].gridLines.color = data.scales.xAxes.gridLines.color;
+  opts.scales.yAxes[0].gridLines.color = data.scales.yAxes.gridLines.color;
+
+  opts.scales.xAxes[0].color = data.scales.xAxes.color;
+  opts.scales.yAxes[0].color = data.scales.yAxes.color;
+
+  opts.scales.xAxes[0].position = data.scales.xAxes.align;
+  opts.scales.yAxes[0].position = data.scales.yAxes.align;
+
+  opts.scales.xAxes[0].gridLines.drawTicks = data.scales.xAxes.ticks;
+  opts.scales.yAxes[0].gridLines.drawTicks = data.scales.yAxes.ticks;
+
+  // Axis Y color and thickness 
+  opts.scales.xAxes[0].gridLines.zeroLineColor = data.scales.yAxes.color;
+  opts.scales.xAxes[0].gridLines.zeroLineWidth = data.scales.yAxes.thickness;
+  // Axis X color and thickness
+  opts.scales.yAxes[0].gridLines.zeroLineColor = data.scales.xAxes.color;
+  opts.scales.yAxes[0].gridLines.zeroLineWidth = data.scales.xAxes.thickness;
+
+  // Grid X lines
+  opts.scales.xAxes[0].gridLines.borderDash =
+    data.scales.xAxes.gridLines.type == "dotted"
+      ? [
+          data.chartHeight * data.scales.xAxes.gridLines.lineWidth * 0.002,
+          data.chartHeight * data.scales.xAxes.gridLines.lineWidth * 0.02,
+        ]
+      : data.scales.xAxes.gridLines.type == "dashed"
+      ? [
+          data.chartHeight * data.scales.xAxes.gridLines.lineWidth * 0.01,
+          data.chartHeight * data.scales.xAxes.gridLines.lineWidth * 0.01,
+        ]
+      : [data.chartWidth];
+
+  // Grid Y lines
+  opts.scales.yAxes[0].gridLines.borderDash =
+    data.scales.yAxes.gridLines.type == "dotted"
+      ? [
+          data.chartWidth * data.scales.yAxes.gridLines.lineWidth * 0.002,
+          data.chartWidth * data.scales.yAxes.gridLines.lineWidth * 0.02,
+        ]
+      : data.scales.yAxes.gridLines.type == "dashed"
+      ? [
+          data.chartWidth * data.scales.yAxes.gridLines.lineWidth * 0.01,
+          data.chartWidth * data.scales.yAxes.gridLines.lineWidth * 0.01,
+        ]
+      : [data.chartHeight];
+
+  // Y Axis type of line
+  opts.scales.xAxes[0].gridLines.zeroLineBorderDash =
+    data.scales.yAxes.type == "dotted"
+      ? [
+          data.chartHeight * data.scales.yAxes.thickness * 0.002,
+          data.chartHeight * data.scales.yAxes.thickness * 0.02,
+        ]
+      : data.scales.yAxes.type == "dashed"
+      ? [
+          data.chartHeight * data.scales.yAxes.thickness * 0.01,
+          data.chartHeight * data.scales.yAxes.thickness * 0.01,
+        ]
+      : [data.chartHeight];
+  // X Axis type of line
+  opts.scales.yAxes[0].gridLines.zeroLineBorderDash =
+    data.scales.xAxes.type == "dotted"
+      ? [
+          data.chartWidth * data.scales.xAxes.thickness * 0.002,
+          data.chartWidth * data.scales.xAxes.thickness * 0.02,
+        ]
+      : data.scales.xAxes.type == "dashed"
+      ? [
+          data.chartWidth * data.scales.xAxes.thickness * 0.01,
+          data.chartWidth * data.scales.xAxes.thickness * 0.01,
+        ]
+      : [data.chartWidth];
+ opts.plugins.datalabels.labels.title.display = data.values.display;
+ 
+  
+      console.log(opts.scales.xAxes[0].gridLines.zeroLineBorderDash);
+  console.log(opts.scales.yAxes[0].gridLines.zeroLineBorderDash);
 
   var ctype = data.chartType;
 
