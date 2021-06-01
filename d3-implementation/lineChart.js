@@ -208,6 +208,7 @@ class LineChart {
       .selectAll(".line")
       .data(myData.datasets)
       .join("g")
+      .attr("class", (d) => d.label.split(" ").join("_"))
       .append("path")
       .attr("class", "line")
       .attr("d", function (d, i) {
@@ -218,6 +219,27 @@ class LineChart {
         return d.borderColor;
       })
       .attr("stroke-width", 2);
+    // Plotting points for the lines
+    if (options.values.display)
+      for (let i = 0; i < myData.datasets.length; i++) {
+        const d = myData.datasets[i];
+        axis
+          .select("." + d.label.split(" ").join("_"))
+          .append("g")
+          .attr("class", "values")
+          .selectAll(".pointValues")
+          .data(d.data)
+          .join("text")
+          .attr(
+            "x",
+            (d, i) => xScale(myData.labels[i]) + xScale.bandwidth() / 2
+          )
+          .attr("y", (d, i) => yScale(d))
+          .text((d) => d)
+          .attr("font-size", 10)
+          .attr("font-weight", "bold")
+          .attr("text-anchor", "middle");
+      }
   }
   axisLeftBottom(axis, options, myData) {
     // Define X Axis
@@ -314,6 +336,7 @@ class LineChart {
       .selectAll(".line")
       .data(myData.datasets)
       .join("g")
+      .attr("class", (d) => d.label.split(" ").join("_"))
       .append("path")
       .attr("class", "line")
       .attr("d", function (d, i) {
@@ -323,8 +346,29 @@ class LineChart {
       .attr("stroke", function (d) {
         return d.borderColor;
       })
-      .attr("stroke-width", 2)
-      ;
+      .attr("stroke-width", 2);
+
+    // Plotting value for the lines
+    if (options.values.display)
+      for (let i = 0; i < myData.datasets.length; i++) {
+        const d = myData.datasets[i];
+        axis
+          .select("." + d.label.split(" ").join("_"))
+          .append("g")
+          .attr("class", "values")
+          .selectAll(".pointValues")
+          .data(d.data)
+          .join("text")
+          .attr(
+            "x",
+            (d, i) => xScale(myData.labels[i]) + xScale.bandwidth() / 2
+          )
+          .attr("y", (d, i) => yScale(d))
+          .text((d) => d)
+          .attr("font-size", 10)
+          .attr("font-weight", "bold")
+          .attr("text-anchor", "middle");
+      }
   }
 
   axisRightTop(axis, options, myData) {
@@ -425,6 +469,7 @@ class LineChart {
       .selectAll(".line")
       .data(myData.datasets)
       .join("g")
+      .attr("class", (d) => d.label.split(" ").join("_"))
       .append("path")
       .attr("class", "line")
       .attr("d", function (d, i) {
@@ -435,6 +480,27 @@ class LineChart {
         return d.borderColor;
       })
       .attr("stroke-width", 2);
+
+    if (options.values.display)
+      for (let i = 0; i < myData.datasets.length; i++) {
+        const d = myData.datasets[i];
+        axis
+          .select("." + d.label.split(" ").join("_"))
+          .append("g")
+          .attr("class", "values")
+          .selectAll(".pointValues")
+          .data(d.data)
+          .join("text")
+          .attr(
+            "x",
+            (d, i) => xScale(myData.labels[i]) + xScale.bandwidth() / 2
+          )
+          .attr("y", (d, i) => yScale(d))
+          .text((d) => d)
+          .attr("font-size", 10)
+          .attr("font-weight", "bold")
+          .attr("text-anchor", "middle");
+      }
   }
 
   axisRightBottom(axis, options, myData) {
@@ -535,6 +601,7 @@ class LineChart {
       .selectAll(".line")
       .data(myData.datasets)
       .join("g")
+      .attr("class", (d) => d.label.split(" ").join("_"))
       .append("path")
       .attr("class", "line")
       .attr("d", function (d, i) {
@@ -545,6 +612,28 @@ class LineChart {
         return d.borderColor;
       })
       .attr("stroke-width", 2);
+
+    // Plotting value for the lines
+    if (options.values.display)
+      for (let i = 0; i < myData.datasets.length; i++) {
+        const d = myData.datasets[i];
+        axis
+          .select("." + d.label.split(" ").join("_"))
+          .append("g")
+          .attr("class", "values")
+          .selectAll(".pointValues")
+          .data(d.data)
+          .join("text")
+          .attr(
+            "x",
+            (d, i) => xScale(myData.labels[i]) + xScale.bandwidth() / 2
+          )
+          .attr("y", (d, i) => yScale(d))
+          .text((d) => d)
+          .attr("font-size", 10)
+          .attr("font-weight", "bold")
+          .attr("text-anchor", "middle");
+      }
   }
   adjuster(options, axis, svg) {
     // Remove X Axis if not visible
