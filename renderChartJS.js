@@ -86,8 +86,7 @@ var opts = {
     datalabels: {
       color: "black",
       labels: {
-        title: 
-        { 
+        title: {
           display: false,
           font: {
             weight: "bold",
@@ -128,7 +127,7 @@ function fillOptions(data) {
   opts.scales.xAxes[0].gridLines.drawTicks = data.scales.xAxes.ticks;
   opts.scales.yAxes[0].gridLines.drawTicks = data.scales.yAxes.ticks;
 
-  // Axis Y color and thickness 
+  // Axis Y color and thickness
   opts.scales.xAxes[0].gridLines.zeroLineColor = data.scales.yAxes.color;
   opts.scales.xAxes[0].gridLines.zeroLineWidth = data.scales.yAxes.thickness;
   // Axis X color and thickness
@@ -189,11 +188,15 @@ function fillOptions(data) {
           data.chartWidth * data.scales.xAxes.thickness * 0.01,
         ]
       : [data.chartWidth];
- opts.plugins.datalabels.labels.title.display = data.values.display;
- 
-  
-      console.log(opts.scales.xAxes[0].gridLines.zeroLineBorderDash);
-  console.log(opts.scales.yAxes[0].gridLines.zeroLineBorderDash);
+  opts.plugins.datalabels.labels.title.display = data.values.display;
+
+  // No need to reverse the Y Axis for line chart
+  if (data.chartType == "line") opts.scales.yAxes[0].ticks.reverse = false;
+  // No axis is required for pie and doughnut charts
+  if (data.chartType == "doughnut" || data.chartType == "pie") {
+    opts.scales.xAxes[0].display = false;
+    opts.scales.yAxes[0].display = false;
+  }
 
   var ctype = data.chartType;
 
