@@ -75,6 +75,10 @@ var formOption = {
 
 function captureChartInformation(form) {
   var elems = form.elements;
+
+  formOption.chartHeight = parseFloat(data.chartH.value);
+  formOption.chartWidth = parseFloat(data.chartW.value);
+
   formOption.title.display = elems.showtitle.checked;
   formOption.title.text = elems.titletext.value;
   formOption.values.display = elems.plotDisplay.checked;
