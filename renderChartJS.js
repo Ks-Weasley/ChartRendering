@@ -98,119 +98,124 @@ var opts = {
 };
 
 function fillOptions(data) {
-  opts.title.display = data.title.display;
+  // Title settings
+  opts.title.display = data.title.text.length == 0 ? false: true;
   opts.title.text = data.title.text;
 
-  opts.legend.display = data.legend.display;
-  opts.legend.position = data.legend.position;
+  // Value label settings
+  opts.plugins.datalabels.labels.title.display = (data.values.enabled === "true");
 
-  opts.scales.xAxes[0].gridLines.display = data.scales.xAxes.gridLines.display;
+  // Legend settings
+  opts.legend.display = (data.legend.enabled === "true");
+  opts.legend.position = data.legend.verticalAlign;
+  
+  // 
+  opts.scales.xAxes[0].gridLines.display = (data.xAxis.gridLines.enabled === "true");
   opts.scales.xAxes[0].gridLines.lineWidth =
-    data.scales.xAxes.gridLines.lineWidth;
+    data.xAxis.gridLines.width;
 
-  opts.scales.yAxes[0].gridLines.display = data.scales.yAxes.gridLines.display;
+  opts.scales.yAxes[0].gridLines.display = (data.yAxis.gridLines.enabled === "true");
   opts.scales.yAxes[0].gridLines.lineWidth =
-    data.scales.yAxes.gridLines.lineWidth;
+    data.yAxis.gridLines.width;
 
-  opts.scales.xAxes[0].ticks.display = data.scales.xAxes.labels;
-  opts.scales.yAxes[0].ticks.display = data.scales.yAxes.labels;
+  opts.scales.xAxes[0].ticks.display = (data.xAxis.labels.enabled === "true");
+  opts.scales.yAxes[0].ticks.display = (data.yAxis.labels.enabled === "true");
 
-  opts.scales.xAxes[0].gridLines.color = data.scales.xAxes.gridLines.color;
-  opts.scales.yAxes[0].gridLines.color = data.scales.yAxes.gridLines.color;
+  opts.scales.xAxes[0].gridLines.color = data.xAxis.gridLines.color;
+  opts.scales.yAxes[0].gridLines.color = data.yAxis.gridLines.color;
 
-  opts.scales.xAxes[0].color = data.scales.xAxes.color;
-  opts.scales.yAxes[0].color = data.scales.yAxes.color;
+  opts.scales.xAxes[0].color = data.xAxis.lineColor;
+  opts.scales.yAxes[0].color = data.yAxis.lineColor;
 
-  opts.scales.xAxes[0].position = data.scales.xAxes.align;
-  opts.scales.yAxes[0].position = data.scales.yAxes.align;
+  opts.scales.xAxes[0].position = data.xAxis.opposite === "true" ? "top" : "bottom";
+  opts.scales.yAxes[0].position = data.yAxis.opposite === "true" ? "right" : "left";
 
-  opts.scales.xAxes[0].gridLines.drawTicks = data.scales.xAxes.ticks;
-  opts.scales.yAxes[0].gridLines.drawTicks = data.scales.yAxes.ticks;
+  opts.scales.xAxes[0].gridLines.drawTicks = data.xAxis.tickLength == 0 ? false: true;
+  opts.scales.yAxes[0].gridLines.drawTicks = data.yAxis.tickLength == 0 ? false: true;
 
   // Axis Y color and thickness
-  opts.scales.xAxes[0].gridLines.zeroLineColor = data.scales.yAxes.color;
-  opts.scales.xAxes[0].gridLines.zeroLineWidth = data.scales.yAxes.thickness;
+  opts.scales.xAxes[0].gridLines.zeroLineColor = data.yAxis.lineColor;
+  opts.scales.xAxes[0].gridLines.zeroLineWidth = data.yAxis.lineWidth;
   // Axis X color and thickness
-  opts.scales.yAxes[0].gridLines.zeroLineColor = data.scales.xAxes.color;
-  opts.scales.yAxes[0].gridLines.zeroLineWidth = data.scales.xAxes.thickness;
+  opts.scales.yAxes[0].gridLines.zeroLineColor = data.xAxis.lineColor;
+  opts.scales.yAxes[0].gridLines.zeroLineWidth = data.xAxis.lineWidth;
 
   // Grid X lines
   opts.scales.xAxes[0].gridLines.borderDash =
-    data.scales.xAxes.gridLines.type == "dotted"
+    data.xAxis.gridLines.dashType == "dotted"
       ? [
-          data.chartHeight * data.scales.xAxes.gridLines.lineWidth * 0.002,
-          data.chartHeight * data.scales.xAxes.gridLines.lineWidth * 0.02,
+          data.chart.height * data.xAxis.gridLines.width * 0.002,
+          data.chart.height * data.xAxis.gridLines.width * 0.02,
         ]
-      : data.scales.xAxes.gridLines.type == "dashed"
+      : data.xAxis.gridLines.dashType == "dashed"
       ? [
-          data.chartHeight * data.scales.xAxes.gridLines.lineWidth * 0.01,
-          data.chartHeight * data.scales.xAxes.gridLines.lineWidth * 0.01,
+          data.chart.height * data.xAxis.gridLines.width * 0.01,
+          data.chart.height * data.xAxis.gridLines.width * 0.01,
         ]
-      : [data.chartWidth];
+      : [data.chart.width];
 
   // Grid Y lines
   opts.scales.yAxes[0].gridLines.borderDash =
-    data.scales.yAxes.gridLines.type == "dotted"
+    data.yAxis.gridLines.dashType == "dotted"
       ? [
-          data.chartWidth * data.scales.yAxes.gridLines.lineWidth * 0.002,
-          data.chartWidth * data.scales.yAxes.gridLines.lineWidth * 0.02,
+          data.chart.width * data.yAxis.gridLines.width * 0.002,
+          data.chart.width * data.yAxis.gridLines.width * 0.02,
         ]
-      : data.scales.yAxes.gridLines.type == "dashed"
+      : data.yAxis.gridLines.dashType == "dashed"
       ? [
-          data.chartWidth * data.scales.yAxes.gridLines.lineWidth * 0.01,
-          data.chartWidth * data.scales.yAxes.gridLines.lineWidth * 0.01,
+          data.chart.width * data.yAxis.gridLines.width * 0.01,
+          data.chart.width * data.yAxis.gridLines.width * 0.01,
         ]
-      : [data.chartHeight];
+      : [data.chart.height];
 
   // Y Axis type of line
   opts.scales.xAxes[0].gridLines.zeroLineBorderDash =
-    data.scales.yAxes.type == "dotted"
+    data.yAxis.dashType == "dotted"
       ? [
-          data.chartHeight * data.scales.yAxes.thickness * 0.002,
-          data.chartHeight * data.scales.yAxes.thickness * 0.02,
+          data.chart.height * data.yAxis.lineWidth * 0.002,
+          data.chart.height * data.yAxis.lineWidth * 0.02,
         ]
-      : data.scales.yAxes.type == "dashed"
+      : data.yAxis.dashType == "dashed"
       ? [
-          data.chartHeight * data.scales.yAxes.thickness * 0.01,
-          data.chartHeight * data.scales.yAxes.thickness * 0.01,
+          data.chart.height * data.yAxis.lineWidth * 0.01,
+          data.chart.height * data.yAxis.lineWidth * 0.01,
         ]
-      : [data.chartHeight];
+      : [data.chart.height];
   // X Axis type of line
   opts.scales.yAxes[0].gridLines.zeroLineBorderDash =
-    data.scales.xAxes.type == "dotted"
+    data.xAxis.dashType == "dotted"
       ? [
-          data.chartWidth * data.scales.xAxes.thickness * 0.002,
-          data.chartWidth * data.scales.xAxes.thickness * 0.02,
+          data.chart.width * data.xAxis.lineWidth * 0.002,
+          data.chart.width * data.xAxis.lineWidth * 0.02,
         ]
-      : data.scales.xAxes.type == "dashed"
+      : data.xAxis.dashType == "dashed"
       ? [
-          data.chartWidth * data.scales.xAxes.thickness * 0.01,
-          data.chartWidth * data.scales.xAxes.thickness * 0.01,
+          data.chart.width * data.xAxis.lineWidth * 0.01,
+          data.chart.width * data.xAxis.lineWidth * 0.01,
         ]
-      : [data.chartWidth];
-  opts.plugins.datalabels.labels.title.display = data.values.display;
-
+      : [data.chart.width];
+  
   // No need to reverse the Y Axis for line chart
-  if (data.chartType == "line") opts.scales.yAxes[0].ticks.reverse = false;
+  if (data.chart.type == "line") opts.scales.yAxes[0].ticks.reverse = false;
   // No axis is required for pie and doughnut charts
-  if (data.chartType == "doughnut" || data.chartType == "pie") {
+  if (data.chart.type == "doughnut" || data.chart.type == "pie") {
     opts.scales.xAxes[0].display = false;
     opts.scales.yAxes[0].display = false;
   }
 
-  var ctype = data.chartType;
+  var ctype = data.chart.type;
 
-  opts.scales.xAxes[0].display = data.scales.xAxes.display;
+  opts.scales.xAxes[0].display = data.xAxis.enabled;
   opts.scales.xAxes[0].scaleLabel.display =
-    data.scales.xAxes.scaleLabel.display;
+    data.xAxis.title.text.length ? false:true ;
   opts.scales.xAxes[0].scaleLabel.labelString =
-    data.scales.xAxes.scaleLabel.text;
+    data.xAxis.title.text;
 
-  opts.scales.yAxes[0].display = data.scales.yAxes.display;
+  opts.scales.yAxes[0].display = data.yAxis.enabled;
   opts.scales.yAxes[0].scaleLabel.display =
-    data.scales.yAxes.scaleLabel.display;
+    data.yAxis.title.text.length ? false:true ;
   opts.scales.yAxes[0].scaleLabel.labelString =
-    data.scales.yAxes.scaleLabel.text;
+    data.yAxis.title.text;
   if (ctype == "stacked hbar" || ctype == "stacked vbar") {
     opts.scales.xAxes[0].stacked = true;
     opts.scales.yAxes[0].stacked = true;
@@ -221,8 +226,8 @@ function fillOptions(data) {
 function renderChartJS(data) {
   fillOptions(data);
 
-  const chartWidth = data.chartWidth;
-  const chartHeight = data.chartHeight;
+  const chartWidth = data.chart.width;
+  const chartHeight = data.chart.height;
 
   // generate chart
   var canvasElement = document.getElementById("canvas");
@@ -234,14 +239,31 @@ function renderChartJS(data) {
   // set chart size
   canvasElement.width = parseInt(chartWidth);
   canvasElement.height = chartHeight;
-  var chartType = data.chartType;
+  var chartType = data.chart.type;
+  const chartData = setChartData(chartType);
+  
   if (chartType === "stacked hbar") chartType = "horizontalBar";
   else if (chartType === "stacked vbar") chartType = "bar";
-
+  
+  
   console.log(JSON.stringify(opts));
   new Chart(ctx, {
     type: chartType,
-    data: data.chartData,
+    data: chartData,
     options: opts,
   });
+}
+
+function setChartData(chartType) {
+  "use strict";
+
+  // Chart type
+  if (chartType === "line") return chartData.lineData;
+  else if (chartType === "bar") return chartData.vbarData;
+  else if (chartType === "pie") return chartData.pieData;
+  else if (chartType === "radar") return chartData.radarData;
+  else if (chartType === "doughnut") return chartData.doughnutData;
+  else if (chartType === "horizontalBar") return chartData.hbarData;
+  else if (chartType === "verticalBar") return chartData.vbarData;
+  return chartData.hbarstackedData;
 }

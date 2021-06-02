@@ -48,11 +48,11 @@ class VerticalBarGraph {
         }
         return pos;
       })
-      .style("stroke", options.scales.xAxes.gridLines.color)
+      .style("stroke", options.scales.xAxis.gridLines.color)
       .style(
         "stroke-width",
-        options.scales.xAxes.gridLines.display
-          ? options.scales.xAxes.gridLines.width
+        options.scales.xAxis.gridLines.display
+          ? options.scales.xAxis.gridLines.width
           : 0
       );
   }
@@ -81,11 +81,11 @@ class VerticalBarGraph {
         }
         return pos;
       })
-      .style("stroke", options.scales.xAxes.gridLines.color)
+      .style("stroke", options.scales.xAxis.gridLines.color)
       .style(
         "stroke-width",
-        options.scales.xAxes.gridLines.display
-          ? options.scales.xAxes.gridLines.width
+        options.scales.xAxis.gridLines.display
+          ? options.scales.xAxis.gridLines.width
           : 0
       );
   }
@@ -99,10 +99,10 @@ class VerticalBarGraph {
         d3
           .axisLeft(yScale)
           .tickSizeInner(
-            options.scales.yAxes.gridLines.display ? -options.chartWidth : 0
+            options.scales.yAxis.gridLines.display ? -options.chartWidth : 0
           )
           .tickSizeOuter(
-            options.scales.yAxes.gridLines.display ? -options.chartWidth : 0
+            options.scales.yAxis.gridLines.display ? -options.chartWidth : 0
           )
           .tickFormat(function (d) {
             return "";
@@ -119,10 +119,10 @@ class VerticalBarGraph {
         d3
           .axisRight(yScale)
           .tickSizeInner(
-            options.scales.yAxes.gridLines.display ? -options.chartWidth : 0
+            options.scales.yAxis.gridLines.display ? -options.chartWidth : 0
           )
           .tickSizeOuter(
-            options.scales.yAxes.gridLines.display ? -options.chartWidth : 0
+            options.scales.yAxis.gridLines.display ? -options.chartWidth : 0
           )
           .tickFormat(function (d) {
             return "";
@@ -158,10 +158,10 @@ class VerticalBarGraph {
         d3
           .axisBottom(xScale)
           .ticks(myData.dataset.length)
-          .tickSizeInner(options.scales.xAxes.ticks ? 6 : 0)
-          .tickSizeOuter(options.scales.xAxes.ticks ? 6 : 0)
+          .tickSizeInner(options.scales.xAxis.ticks ? 6 : 0)
+          .tickSizeOuter(options.scales.xAxis.ticks ? 6 : 0)
           .tickFormat(function (d) {
-            if (options.scales.xAxes.labels) return d;
+            if (options.scales.xAxis.labels) return d;
             else return "";
           })
       )
@@ -171,8 +171,8 @@ class VerticalBarGraph {
       .attr("text-anchor", "end")
       .attr("stroke", "black")
       .text(
-        options.scales.xAxes.scaleLabel.display
-          ? options.scales.xAxes.scaleLabel.text
+        options.scales.xAxis.scaleLabel.display
+          ? options.scales.xAxis.scaleLabel.text
           : ""
       );
 
@@ -183,10 +183,10 @@ class VerticalBarGraph {
       .call(
         d3
           .axisLeft(yScale)
-          .tickSizeOuter(options.scales.yAxes.ticks ? 6 : 0)
-          .tickSizeInner(options.scales.yAxes.ticks ? 6 : 0)
+          .tickSizeOuter(options.scales.yAxis.ticks ? 6 : 0)
+          .tickSizeInner(options.scales.yAxis.ticks ? 6 : 0)
           .tickFormat(function (d) {
-            if (options.scales.yAxes.labels) return d;
+            if (options.scales.yAxis.labels) return d;
             else return "";
           })
           .ticks(myData.dataset.length)
@@ -199,8 +199,8 @@ class VerticalBarGraph {
       .attr("text-anchor", "end")
       .attr("stroke", "black")
       .text(
-        options.scales.yAxes.scaleLabel.display
-          ? options.scales.yAxes.scaleLabel.text
+        options.scales.yAxis.scaleLabel.display
+          ? options.scales.yAxis.scaleLabel.text
           : ""
       );
 
@@ -276,10 +276,10 @@ class VerticalBarGraph {
         d3
           .axisTop(xScale)
           .ticks(myData.dataset.length)
-          .tickSizeInner(options.scales.xAxes.ticks ? 6 : 0)
-          .tickSizeOuter(options.scales.xAxes.ticks ? 6 : 0)
+          .tickSizeInner(options.scales.xAxis.ticks ? 6 : 0)
+          .tickSizeOuter(options.scales.xAxis.ticks ? 6 : 0)
           .tickFormat(function (d) {
-            if (options.scales.xAxes.labels) return d;
+            if (options.scales.xAxis.labels) return d;
             else return "";
           })
       )
@@ -289,8 +289,8 @@ class VerticalBarGraph {
       .attr("text-anchor", "end")
       .attr("stroke", "black")
       .text(
-        options.scales.xAxes.scaleLabel.display
-          ? options.scales.xAxes.scaleLabel.text
+        options.scales.xAxis.scaleLabel.display
+          ? options.scales.xAxis.scaleLabel.text
           : ""
       );
 
@@ -301,10 +301,10 @@ class VerticalBarGraph {
       .call(
         d3
           .axisLeft(yScale)
-          .tickSizeOuter(options.scales.yAxes.ticks ? 6 : 0)
-          .tickSizeInner(options.scales.yAxes.ticks ? 6 : 0)
+          .tickSizeOuter(options.scales.yAxis.ticks ? 6 : 0)
+          .tickSizeInner(options.scales.yAxis.ticks ? 6 : 0)
           .tickFormat(function (d) {
-            if (options.scales.yAxes.labels) return d;
+            if (options.scales.yAxis.labels) return d;
             else return "";
           })
           .ticks(myData.dataset.length)
@@ -317,8 +317,8 @@ class VerticalBarGraph {
       .attr("stroke", "black")
       // .attr("transform", "rotate(180)")
       .text(
-        options.scales.yAxes.scaleLabel.display
-          ? options.scales.yAxes.scaleLabel.text
+        options.scales.yAxis.scaleLabel.display
+          ? options.scales.yAxis.scaleLabel.text
           : ""
       );
 
@@ -389,10 +389,10 @@ class VerticalBarGraph {
         d3
           .axisBottom(xScale)
           .ticks(myData.dataset.length)
-          .tickSizeInner(options.scales.xAxes.ticks ? 6 : 0)
-          .tickSizeOuter(options.scales.xAxes.ticks ? 6 : 0)
+          .tickSizeInner(options.scales.xAxis.ticks ? 6 : 0)
+          .tickSizeOuter(options.scales.xAxis.ticks ? 6 : 0)
           .tickFormat(function (d) {
-            if (options.scales.xAxes.labels) return d;
+            if (options.scales.xAxis.labels) return d;
             else return "";
           })
       )
@@ -402,8 +402,8 @@ class VerticalBarGraph {
       .attr("text-anchor", "end")
       .attr("stroke", "black")
       .text(
-        options.scales.xAxes.scaleLabel.display
-          ? options.scales.xAxes.scaleLabel.text
+        options.scales.xAxis.scaleLabel.display
+          ? options.scales.xAxis.scaleLabel.text
           : ""
       );
 
@@ -415,10 +415,10 @@ class VerticalBarGraph {
       .call(
         d3
           .axisRight(yScale)
-          .tickSizeOuter(options.scales.yAxes.ticks ? 6 : 0)
-          .tickSizeInner(options.scales.yAxes.ticks ? 6 : 0)
+          .tickSizeOuter(options.scales.yAxis.ticks ? 6 : 0)
+          .tickSizeInner(options.scales.yAxis.ticks ? 6 : 0)
           .tickFormat(function (d) {
-            if (options.scales.yAxes.labels) return d;
+            if (options.scales.yAxis.labels) return d;
             else return "";
           })
       )
@@ -429,8 +429,8 @@ class VerticalBarGraph {
       .attr("text-anchor", "start")
       .attr("stroke", "black")
       .text(
-        options.scales.yAxes.scaleLabel.display
-          ? options.scales.yAxes.scaleLabel.text
+        options.scales.yAxis.scaleLabel.display
+          ? options.scales.yAxis.scaleLabel.text
           : ""
       );
 
@@ -505,10 +505,10 @@ class VerticalBarGraph {
         d3
           .axisTop(xScale)
           .ticks(myData.dataset.length)
-          .tickSizeInner(options.scales.xAxes.ticks ? 6 : 0)
-          .tickSizeOuter(options.scales.xAxes.ticks ? 6 : 0)
+          .tickSizeInner(options.scales.xAxis.ticks ? 6 : 0)
+          .tickSizeOuter(options.scales.xAxis.ticks ? 6 : 0)
           .tickFormat(function (d) {
-            if (options.scales.xAxes.labels) return d;
+            if (options.scales.xAxis.labels) return d;
             else return "";
           })
       )
@@ -518,8 +518,8 @@ class VerticalBarGraph {
       .attr("text-anchor", "end")
       .attr("stroke", "black")
       .text(
-        options.scales.xAxes.scaleLabel.display
-          ? options.scales.xAxes.scaleLabel.text
+        options.scales.xAxis.scaleLabel.display
+          ? options.scales.xAxis.scaleLabel.text
           : ""
       );
 
@@ -531,10 +531,10 @@ class VerticalBarGraph {
       .call(
         d3
           .axisRight(yScale)
-          .tickSizeOuter(options.scales.yAxes.ticks ? 6 : 0)
-          .tickSizeInner(options.scales.yAxes.ticks ? 6 : 0)
+          .tickSizeOuter(options.scales.yAxis.ticks ? 6 : 0)
+          .tickSizeInner(options.scales.yAxis.ticks ? 6 : 0)
           .tickFormat(function (d) {
-            if (options.scales.yAxes.labels) return d;
+            if (options.scales.yAxis.labels) return d;
             else return "";
           })
       )
@@ -545,8 +545,8 @@ class VerticalBarGraph {
       .attr("text-anchor", "start")
       .attr("stroke", "black")
       .text(
-        options.scales.yAxes.scaleLabel.display
-          ? options.scales.yAxes.scaleLabel.text
+        options.scales.yAxis.scaleLabel.display
+          ? options.scales.yAxis.scaleLabel.text
           : ""
       );
 
@@ -593,10 +593,10 @@ class VerticalBarGraph {
 
   adjuster(options, axis, svg) {
     // Remove X Axis if not visible
-    if (!options.scales.xAxes.display) axis.select(".xAxis>.domain").remove();
+    if (!options.scales.xAxis.display) axis.select(".xAxis>.domain").remove();
 
     // Remove Y Axis if not visible
-    if (!options.scales.yAxes.display) axis.select(".yAxis>.domain").remove();
+    if (!options.scales.yAxis.display) axis.select(".yAxis>.domain").remove();
 
     // Remove X grid domain
     svg.selectAll(".gridX>.domain").remove();
@@ -610,79 +610,79 @@ class VerticalBarGraph {
       .selectAll(".xAxis>.domain")
       .attr(
         "stroke-width",
-        this.options.scales.xAxes.display
-          ? this.options.scales.xAxes.thickness
+        this.options.scales.xAxis.display
+          ? this.options.scales.xAxis.thickness
           : 0
       )
       .attr(
         "stroke-dasharray",
-        this.options.scales.xAxes.type["stroke-dasharray"]
+        this.options.scales.xAxis.type["stroke-dasharray"]
       )
-      .attr("stroke-linecap", this.options.scales.xAxes.type["stroke-linecap"])
-      .attr("stroke", this.options.scales.xAxes.color);
+      .attr("stroke-linecap", this.options.scales.xAxis.type["stroke-linecap"])
+      .attr("stroke", this.options.scales.xAxis.color);
     axis
       .selectAll(".xAxis>.tick")
-      .attr("stroke", this.options.scales.xAxes.color);
+      .attr("stroke", this.options.scales.xAxis.color);
 
     // Setting Y Axis properties
     axis
       .selectAll(".yAxis>.domain")
       .attr(
         "stroke-width",
-        this.options.scales.yAxes.display
-          ? this.options.scales.yAxes.thickness
+        this.options.scales.yAxis.display
+          ? this.options.scales.yAxis.thickness
           : 0
       )
       .attr(
         "stroke-dasharray",
-        this.options.scales.yAxes.type["stroke-dasharray"]
+        this.options.scales.yAxis.type["stroke-dasharray"]
       )
-      .attr("stroke-linecap", this.options.scales.yAxes.type["stroke-linecap"])
-      .attr("stroke", this.options.scales.yAxes.color);
+      .attr("stroke-linecap", this.options.scales.yAxis.type["stroke-linecap"])
+      .attr("stroke", this.options.scales.yAxis.color);
     axis
       .selectAll(".yAxis>.tick")
-      .attr("stroke", this.options.scales.yAxes.color);
+      .attr("stroke", this.options.scales.yAxis.color);
 
     // Setting Grid X Width
     svg
       .selectAll(".gridX")
       .attr(
         "stroke-width",
-        this.options.scales.xAxes.gridLines.display
-          ? this.options.scales.xAxes.gridLines.width
+        this.options.scales.xAxis.gridLines.display
+          ? this.options.scales.xAxis.gridLines.width
           : 0
       )
       .attr(
         "stroke-dasharray",
-        this.options.scales.xAxes.gridLines.type["stroke-dasharray"]
+        this.options.scales.xAxis.gridLines.type["stroke-dasharray"]
       )
       .attr(
         "stroke-linecap",
-        this.options.scales.xAxes.gridLines.type["stroke-linecap"]
+        this.options.scales.xAxis.gridLines.type["stroke-linecap"]
       )
-      .attr("stroke", this.options.scales.xAxes.gridLines.color);
+      .attr("stroke", this.options.scales.xAxis.gridLines.color);
 
     //  Setting Grid Y Axis
     svg
       .selectAll(".gridY")
       .attr(
         "stroke-width",
-        this.options.scales.yAxes.gridLines.display
-          ? this.options.scales.yAxes.gridLines.width
+        this.options.scales.yAxis.gridLines.display
+          ? this.options.scales.yAxis.gridLines.width
           : 0
       )
       .attr(
         "stroke-dasharray",
-        this.options.scales.yAxes.gridLines.type["stroke-dasharray"]
+        this.options.scales.yAxis.gridLines.type["stroke-dasharray"]
       )
       .attr(
         "stroke-linecap",
-        this.options.scales.yAxes.gridLines.type["stroke-linecap"]
+        this.options.scales.yAxis.gridLines.type["stroke-linecap"]
       )
-      .attr("stroke", this.options.scales.yAxes.gridLines.color);
+      .attr("stroke", this.options.scales.yAxis.gridLines.color);
     svg
       .selectAll(".gridY line")
-      .attr("stroke", this.options.scales.yAxes.gridLines.color);
+      .attr("stroke", this.options.scales.yAxis.gridLines.color);
   }
 
   main() {
@@ -788,18 +788,18 @@ class VerticalBarGraph {
 
     // Finding axis alignment
     if (
-      this.options.scales.xAxes.align === "bottom" &&
-      this.options.scales.yAxes.align === "left"
+      this.options.scales.xAxis.align === "bottom" &&
+      this.options.scales.yAxis.align === "left"
     )
       this.axisLeftBottom(axis, this.options, this.myData);
     else if (
-      this.options.scales.xAxes.align === "bottom" &&
-      this.options.scales.yAxes.align === "right"
+      this.options.scales.xAxis.align === "bottom" &&
+      this.options.scales.yAxis.align === "right"
     )
       this.axisRightBottom(axis, marginWidth, this.options, this.myData);
     else if (
-      this.options.scales.xAxes.align === "top" &&
-      this.options.scales.yAxes.align === "left"
+      this.options.scales.xAxis.align === "top" &&
+      this.options.scales.yAxis.align === "left"
     )
       this.axisLeftTop(axis, marginWidth, this.options, this.myData);
     else this.axisRightTop(axis, marginWidth, this.options, this.myData);
