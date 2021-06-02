@@ -1,74 +1,68 @@
 // Captures the form data onSubmit and publishes it to the 'FORM OPTION' namespace/topic
 
 var formOption = {
-  chartWidth: 600,
-  chartHeight: 600,
-  chartType: "horizontalBar",
-  chartData: chartData.hbarData,
-  chartTheme: "#5083B4",
-  chartInnerPadding: 0.4,
-  title: {
-    display: true,
-    text: "My Chart",
+  chart: {
+    width: 600,
+    height: 600,
+    type: "horizontalBar",
+    theme: "#5083B4",
+    innerPadding: 0.4,
   },
-  values: {
-    display: true,
-    absolute: true,
+  title: {
+    text: "",
   },
   legend: {
-    display: true,
-    position: "top",
+    enabled: "true",
+    align: "center",
+    verticalAlign: "bottom",
   },
-  scales: {
-    xAxes: {
-      display: true,
+  values: {
+    enabled: "true",
+    absolute: "true",
+    smooth: "true",
+  },
+  xAxis: {
+    enabled: "true",
+    lineColor: "black",
+    lineWidth: 2.0,
+    opposite: "false",
+    dashType: "solid",
+    tickLength: 1,
+    labels: {
+      enabled: "true",
       color: "black",
-      thickness: 2.0,
-      align: "bottom",
-      type: "solid",
-      line: true,
-      ticks: true,
-      labels: true,
-      scaleLabel: {
-        display: true,
-        text: "Horizontal text",
-        color: "balck",
-
-      },
-      gridLines: {
-        display: true,
-        lineWidth: 0.5,
-        color: "black",
-        type: "solid",
-      },
     },
-    yAxes: {
-      display: true,
+    title: {
+      text: "",
       color: "black",
-      thickness: 2.0,
-      align: "left",
-      type: "solid",
-      line: true,
-      ticks: true,
-      labels: true,
-      scaleLabel: {
-        display: true,
-        text: "Vertical Label",
-        color: "balck",
-
-      },
-      gridLines: {
-        display: true,
-        lineWidth: 0.5,
-        color: "black",
-        type: "solid",
-      },
     },
-    values: {
-      display: true,
-      absolute: true,
-      percentage: false,
-      smooth: true,
+    gridLines: {
+      enabled: "true",
+      width: 0.5,
+      color: "black",
+      dashType: "solid",
+    },
+  },
+  yAxis: {
+    enabled: "true",
+    lineColor: "black",
+    lineWidth: 2.0,
+    opposite: "false",
+    dashType: "solid",
+    tickLength: 1,
+    labels: {
+      enabled: "true",
+      color: "black",
+    },
+    title: {
+      text: "",
+      color: "black",
+    },
+    gridLines: {
+      enabled: "true",
+      width: 0.5,
+      color: "black",
+      dashType: "solid",
     },
   },
 };
@@ -76,76 +70,77 @@ var formOption = {
 function captureChartInformation(form) {
   var elems = form.elements;
 
-  formOption.chartHeight = parseFloat(data.chartH.value);
-  formOption.chartWidth = parseFloat(data.chartW.value);
+  formOption.chart.height = parseFloat(form.chartH.value);
+  formOption.chart.width = parseFloat(form.chartW.value);
 
-  formOption.title.display = elems.showtitle.checked;
   formOption.title.text = elems.titletext.value;
-  formOption.values.display = elems.plotDisplay.checked;
-  formOption.values.absolute = elems.plotByValue.checked;
-  formOption.values.percentage = elems.plotByPercentage.checked;
-  formOption.values.smooth = elems.smooth.checked;
-  console.log(formOption.values);
+  formOption.values.enabled = elems.plotDisplay.checked.toString();
+  formOption.values.absolute = elems.plotByValue.checked.toString();
+  formOption.values.smooth = elems.smooth.checked.toString();
+  
   // Legend settings
-  formOption.legend.display = elems.showlegend.checked;
-  formOption.legend.position =
+  formOption.legend.enabled = elems.showlegend.checked.toString();
+  formOption.legend.verticalAlign =
     elems.lposition.options[elems.lposition.options.selectedIndex].value;
 
   // X Axis align settings
-  formOption.scales.xAxes.align =
-    elems.Xposition.options[elems.Xposition.options.selectedIndex].value;
+  formOption.xAxis.opposite =
+    elems.Xposition.options[elems.Xposition.options.selectedIndex].value ===
+    "top"
+      ? "true"
+      : "false";
   // X axis tick settings
-  formOption.scales.xAxes.ticks = elems.showxaxisTicks.checked;
+  formOption.xAxis.tickLength = elems.showxaxisTicks.checked ? 1 : 0;
   // X Axis tick label settings
-  formOption.scales.xAxes.labels = elems.showxaxisTickLabels.checked;
-  formOption.scales.xAxes.gridLines.display = elems.gridXdisplay.checked;
-  formOption.scales.xAxes.gridLines.lineWidth = parseFloat(
-    elems.gridXLineWidth.value
-  );
-  formOption.scales.xAxes.color = elems.xAxesColor.value;
-  formOption.scales.xAxes.thickness = parseInt(elems.xAxesThickness.value);
-  formOption.scales.xAxes.display = elems.showxaxis.checked;
-  formOption.scales.xAxes.scaleLabel.display = elems.showxlabel.checked;
-  formOption.scales.xAxes.scaleLabel.text = elems.xlabel.value;
-  formOption.scales.xAxes.gridLines.type = elems.xGridLineType.options[elems.xGridLineType.options.selectedIndex].value;
-  formOption.scales.xAxes.type = elems.xLineType.options[elems.xLineType.options.selectedIndex].value;
-  formOption.scales.xAxes.gridLines.color = elems.xAxesGridColor.value;
-  
+  formOption.xAxis.labels.enabled = elems.showxaxisTickLabels.checked.toString();
+  formOption.xAxis.gridLines.enabled = elems.gridXdisplay.checked.toString();
+  formOption.xAxis.gridLines.width = parseFloat(elems.gridXLineWidth.value);
+  formOption.xAxis.lineColor = elems.xAxesColor.value;
+  formOption.xAxis.lineWidth = parseInt(elems.xAxesThickness.value);
+  formOption.xAxis.enabled = elems.showxaxis.checked.toString();
+  formOption.xAxis.title.text = elems.xlabel.value;
+  formOption.xAxis.gridLines.dashType =
+    elems.xGridLineType.options[
+      elems.xGridLineType.options.selectedIndex
+    ].value;
+  formOption.xAxis.dashType =
+    elems.xLineType.options[elems.xLineType.options.selectedIndex].value;
+  formOption.xAxis.gridLines.color = elems.xAxesGridColor.value;
+
   // Y Axis align settings
-  formOption.scales.yAxes.align =
-    elems.Yposition.options[elems.Yposition.options.selectedIndex].value;
+  formOption.yAxis.opposite =
+    elems.Yposition.options[elems.Yposition.options.selectedIndex].value ===
+    "left"
+      ? "false"
+      : "true";
 
   // Y axis tick settings
-  formOption.scales.yAxes.ticks = elems.showyaxisTicks.checked;
+  formOption.yAxis.tickLength = elems.showyaxisTicks.checked ? 1: 0;
 
   // Y axis tick label settings
-  formOption.scales.yAxes.labels = elems.showyaxisTickLabels.checked;
+  formOption.yAxis.labels.enabled =
+    elems.showyaxisTickLabels.checked.toString();
 
- 
+  formOption.yAxis.gridLines.enabled = elems.gridYdisplay.checked.toString();
+  formOption.yAxis.gridLines.width = parseFloat(elems.gridYLineWidth.value);
 
-  formOption.scales.yAxes.gridLines.display = elems.gridYdisplay.checked;
-  formOption.scales.yAxes.gridLines.lineWidth = parseFloat(
-    elems.gridYLineWidth.value
-  );
+  formOption.yAxis.lineColor = elems.yAxesColor.value;
+  formOption.yAxis.lineWidth = parseInt(elems.yAxesThickness.value);
+  formOption.yAxis.enabled = elems.showyaxis.checked.toString();
+  formOption.yAxis.title.text = elems.ylabel.value;
+  formOption.yAxis.gridLines.dashType =
+    elems.yGridLineType.options[
+      elems.yGridLineType.options.selectedIndex
+    ].value;
+  formOption.yAxis.dashType =
+    elems.yLineType.options[elems.yLineType.options.selectedIndex].value;
+  formOption.yAxis.gridLines.color = elems.yAxesGridColor.value;
 
-  
-  formOption.scales.yAxes.color = elems.yAxesColor.value;
-  formOption.scales.yAxes.thickness = parseInt(elems.yAxesThickness.value);
-  formOption.scales.yAxes.display = elems.showyaxis.checked;
-  formOption.scales.yAxes.scaleLabel.display = elems.showylabel.checked;
-  formOption.scales.yAxes.scaleLabel.text = elems.ylabel.value;
-  formOption.scales.yAxes.gridLines.type = elems.yGridLineType.options[elems.yGridLineType.options.selectedIndex].value;
-  formOption.scales.yAxes.type = elems.yLineType.options[elems.yLineType.options.selectedIndex].value;
-  formOption.scales.yAxes.gridLines.color = elems.yAxesGridColor.value;
-  
   var ctype =
     elems.charttype.options[elems.charttype.options.selectedIndex].value;
   var cData = setChartData(ctype);
 
-  formOption.chartType = ctype;
-  
-
-  
+  formOption.chart.type = ctype;
 
   // To get/set the category labels in the forms
   var labelNames = document.getElementById("labels").value;
@@ -170,22 +165,8 @@ function captureChartInformation(form) {
     console.log(labelItems);
     cData.datasets[0].label = labelItems;
   } else document.getElementById("datalabels").value = cData.datasets[0].label;
-
-  formOption.chartData = cData;
-
+  
+  console.log("User input:")
+  console.log(formOption);
   pubsub.publish("FORM OPTION", [formOption]);
-}
-
-function setChartData(chartType) {
-  "use strict";
-
-  // Chart type
-  if (chartType === "line") return chartData.lineData;
-  else if (chartType === "bar") return chartData.vbarData;
-  else if (chartType === "pie") return chartData.pieData;
-  else if (chartType === "radar") return chartData.radarData;
-  else if (chartType === "doughnut") return chartData.doughnutData;
-  else if (chartType === "horizontalBar") return chartData.hbarData;
-  else if (chartType === "verticalBar") return chartData.vbarData;
-  return chartData.hbarstackedData;
 }
